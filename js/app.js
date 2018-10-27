@@ -31,7 +31,6 @@ try {
     }
 catch(e) { console.log(e); }
 
-
 tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
 
     $scope.init = function() {
@@ -187,6 +186,8 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                     style: categoryStyle(tasks(i).Categories),
                     notes: taskExcerpt(tasks(i).Body, GENERAL_CONFIG.TASKNOTE_EXCERPT),
                     status: taskStatus(tasks(i).Body),
+                    todo: taskToDo(tasks(i).Body),
+                    progress: tasks(i).PercentComplete,
                     oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
                     oneNoteURL: getUserProp(tasks(i), "OneNoteURL")
                 });
@@ -304,6 +305,7 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                 if ( moment(dueDate).isValid && moment(dueDate).year() != 4501 ) { mailBody += " [Due: " + moment(dueDate).format("DD-MMM") + "]"; }
                 if ( taskExcerpt(tasks(i).Body, 10000) ) { mailBody += " - <font color=gray><i>" + taskExcerpt(tasks(i).Body, 10000) + "</i></font>";}
                 mailBody += "<br>" + taskStatus(tasks(i).Body) + "";
+                mailBody += "<br>" + taskToDo(tasks(i).Body) + "";
                 mailBody += "</li>";
             }
             mailBody += "</ul>";
@@ -408,6 +410,33 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
             return str;
     };
 
+    var taskToDo = function (str) {
+        if ( str.match(/### TODO:([\s\S]*?)###/) ) {
+            var todomatch = str.match(/### TODO:([\s\S]*?)###/)[1];
+            // remove empty lines
+            todomatch = todomatch.replace(/^\s*[\r\n]/gm, '');
+            if (!todomatch) { str = null; return str };
+            var todolist = todomatch.match(/\[[xX ]\].*?[\n\r]/gm);
+            if (!todolist) { todolist = []; return todolist };
+            var tasklist = [];
+            var data = {};
+            for (var i = 0; i < todolist.length; i++) {
+                data = {
+                    status: false,
+                    text: '',
+                    searchText: todomatch
+                };
+                if (todolist[i].match(/\[[xX]\]/)) {
+                    data.status = true;
+                }
+                data.text = todolist[i].match(/\[[xX ]\](.*)/)[1];
+                tasklist.push(data);
+            }
+            str = tasklist;
+        } else { str = null; }
+        return str;
+    };
+
     // grabs values of user defined fields from outlook item object
     // currently used for getting onenote url info
     var getUserProp = function(item, prop) {
@@ -461,6 +490,31 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
         eval("function taskitem::Write (bStat) {window.location.reload(); return true;}");
         // bind to taskitem beforedelete event on outlook and reload the page after the task is deleted
         eval("function taskitem::BeforeDelete (bStat) {window.location.reload(); return true;}");
+    };
+
+    // opens up task item in outlook
+    // refreshes the taskboard page when task item window closed
+    $scope.updateToDo = function(item){
+        var taskitem = outlookNS.GetItemFromID(item.entryID);
+        var todoText = "";
+        for (var i = 0; i < item.todo.length; i++) {
+            if (item.todo[i].status) {
+                todoText = todoText + "[x]";
+            } else {
+                todoText = todoText + "[ ]";
+            }
+            todoText = todoText + item.todo[i].text + "\r";
+        }
+        todoText = "### TODO:\r" + todoText + "\r\r###";
+        var progress = Math.round((item.todo.filter(function (e) { if (e.status) { return e }}).length / item.todo.length) * 100);
+        item.progress = progress;
+        taskitem.PercentComplete = progress;
+        taskitem.Body = taskitem.Body.replace(/### TODO:([\s\S]*?)###/, todoText);
+        taskitem.Save();
+        // bind to taskitem write event on outlook and reload the page after the task is saved
+        // eval("function taskitem::Write (bStat) {window.location.reload(); return true;}");
+        // bind to taskitem beforedelete event on outlook and reload the page after the task is deleted
+        // eval("function taskitem::BeforeDelete (bStat) {window.location.reload(); return true;}");
     };
 
     // deletes the task item in both outlook and model data

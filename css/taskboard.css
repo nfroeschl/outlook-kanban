@@ -114,6 +114,19 @@ li.task.task-completed {
     border: 1px solid #bbb;
 }
 
+label.todolist {
+    display: block;
+    font-weight: normal;
+    height: 1em;
+    text-indent: 0.5em;
+}
+
+label.done {
+    text-decoration: line-through;
+    font-style: italic;
+}
+
+
 /* blue
 header: #BBDAFF;
 body: #DBEBFF;

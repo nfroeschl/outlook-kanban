@@ -64,7 +64,18 @@
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'MM/dd/yy' }}) </span>
                             </header>
-                            <div class="panel-body"> {{ task.notes }} </div>
+                            <div class="panel-body">
+                                <p>{{ task.notes }}</p>
+                                <div class="progress" style="margin-bottom: 0;" ng-show="task.todo || task.progress > 0">
+                                    <div class="progress-bar progress-bar-success" role="progressbar" style="min-width: 2em;" ng-style="{ width: task.progress + '%' }">{{ task.progress }}%</div>
+                                </div>
+                                <div ng-show="task.todo">
+                                    <strong>Sub-Tasks:</strong><br>
+                                    <label ng-repeat="item in task.todo" class="todolist" ng-class="{ done : item.status }" ng-click="updateToDo(task)">
+                                        <input type='checkbox' ng-model="item.status"> {{ item.text }}
+                                    </label>
+                                </div>
+                            </div>
                             <footer class="text-right">
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
@@ -96,7 +107,18 @@
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'MM/dd/yy' }}) </span>
                             </header>
-                            <div class="panel-body"> {{ task.notes }} </div>
+                            <div class="panel-body">
+                                <p>{{ task.notes }}</p>
+                                <div class="progress" style="margin-bottom: 0;" ng-show="task.todo || task.progress > 0">
+                                    <div class="progress-bar progress-bar-success" role="progressbar" style="min-width: 2em;" ng-style="{ width: task.progress + '%' }">{{ task.progress }}%</div>
+                                </div>
+                                <div ng-show="task.todo">
+                                    <strong>Sub-Tasks:</strong><br>
+                                    <label ng-repeat="item in task.todo" class="todolist" ng-class="{ done : item.status }" ng-click="updateToDo(task)">
+                                        <input type='checkbox' ng-model="item.status"> {{ item.text }}
+                                    </label>
+                                </div>
+                            </div>
                             <footer class="text-right">
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
@@ -128,7 +150,18 @@
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'MM/dd/yy' }}) </span>
                             </header>
-                            <div class="panel-body"> {{ task.notes }} </div>
+                            <div class="panel-body">
+                                <p>{{ task.notes }}</p>
+                                <div class="progress" style="margin-bottom: 0;" ng-show="task.todo || task.progress > 0">
+                                    <div class="progress-bar progress-bar-success" role="progressbar" style="min-width: 2em;" ng-style="{ width: task.progress + '%' }">{{ task.progress }}%</div>
+                                </div>
+                                <div ng-show="task.todo">
+                                    <strong>Sub-Tasks:</strong><br>
+                                    <label ng-repeat="item in task.todo" class="todolist" ng-class="{ done : item.status }" ng-click="updateToDo(task)">
+                                        <input type='checkbox' ng-model="item.status"> {{ item.text }}
+                                    </label>
+                                </div>
+                            </div>
                             <footer class="text-right">
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
@@ -162,7 +195,18 @@
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'MM/dd/yy' }}) </span>
                             </header>
-                            <div class="panel-body"> {{ task.notes }} </div>
+                            <div class="panel-body">
+                                <p>{{ task.notes }}</p>
+                                <div class="progress" style="margin-bottom: 0;" ng-show="task.todo || task.progress > 0">
+                                    <div class="progress-bar progress-bar-success" role="progressbar" style="min-width: 2em;" ng-style="{ width: task.progress + '%' }">{{ task.progress }}%</div>
+                                </div>
+                                <div ng-show="task.todo">
+                                    <strong>Sub-Tasks:</strong><br>
+                                    <label ng-repeat="item in task.todo" class="todolist" ng-class="{ done : item.status }" ng-click="updateToDo(task)">
+                                        <input type='checkbox' ng-model="item.status"> {{ item.text }}
+                                    </label>
+                                </div>
+                            </div>
                             <footer class="text-right">
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
@@ -194,7 +238,18 @@
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'MM/dd/yy' }}) </span>
                             </header>
-                            <div class="panel-body"> {{ task.notes }} </div>
+                            <div class="panel-body">
+                                <p>{{ task.notes }}</p>
+                                <div class="progress" style="margin-bottom: 0;" ng-show="task.todo || task.progress > 0">
+                                    <div class="progress-bar progress-bar-success" role="progressbar" style="min-width: 2em;" ng-style="{ width: task.progress + '%' }">{{ task.progress }}%</div>
+                                </div>
+                                <div ng-show="task.todo">
+                                    <strong>Sub-Tasks:</strong><br>
+                                    <label ng-repeat="item in task.todo" class="todolist" ng-class="{ done : item.status }" ng-click="updateToDo(task)">
+                                        <input type='checkbox' ng-model="item.status"> {{ item.text }}
+                                    </label>
+                                </div>
+                            </div>
                             <footer class="text-right">
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
