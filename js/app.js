@@ -1,6 +1,7 @@
 'use strict';
 
 var tbApp = angular.module('taskboardApp', ['taskboardApp.config', 'ui.sortable']);
+var globalvar;
 
 try {
         // check whether the page is opened in outlook app
@@ -13,9 +14,23 @@ try {
             var outlookApp = new ActiveXObject("Outlook.Application");
         }
         var outlookNS = outlookApp.GetNameSpace("MAPI");
+        var getCategories = function() {
+            var cnt = outlookNS.Categories.Count;
+            var cats = outlookNS.Categories;
+            var list = [];
+            for (var i = 1; i <= cnt; i++ ) {
+                list.push({
+                    color: cats(i).Color,
+                    name: cats(i).Name
+                });
+            }
+            return list;
+        }
+        var categoryList = getCategories();
 
     }
 catch(e) { console.log(e); }
+
 
 tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
 
@@ -169,6 +184,7 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                     duedate: new Date(tasks(i).DueDate),
                     sensitivity: tasks(i).Sensitivity,
                     categories: tasks(i).Categories,
+                    style: categoryStyle(tasks(i).Categories),
                     notes: taskExcerpt(tasks(i).Body, GENERAL_CONFIG.TASKNOTE_EXCERPT),
                     status: taskStatus(tasks(i).Body),
                     oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
@@ -185,6 +201,59 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
 
             return sortedTasks;
     };
+
+    var categoryStyle = function (cat) {
+        var olColorMap = [
+            '',
+            'red',
+            'orange',
+            'peachpuff',
+            'yellow',
+            'green',
+            'aqua',
+            'olive',
+            'blue',
+            'darkorchid',
+            'indianred',
+            'silver',
+            'darkslategray',
+            'gray',
+            'dimgray',
+            'black',
+            'firebrick',
+            'darkorange',
+            'chocolate',
+            'goldenrod',
+            'forestgreen',
+            'teal',
+            'darkolivegreen',
+            'mediumblue',
+            'indigo',
+            'maroon'
+        ];
+        
+        var itemCategory = cat.split(',');
+        var category = categoryList.filter(function (e) { return e.name == itemCategory[0]; });
+        if (category.length > 0) {
+            return olColorMap[category[0].color];
+        }
+        return '';
+
+
+        // var styles = [
+        //     ["task-cat-1", "#1"],
+        //     ["task-cat-2", "#2"],
+        //     ["task-cat-3", "#3"],
+        //     ["task-cat-4", "#4"],
+        //     ["task-cat-5", "#5"]
+        // ]
+        // for (var i = 0; i < styles.length; i++) {
+        //     if (cat.indexOf(styles[i][1]) >= 0) {
+        //         return styles[i][0]
+        //     }
+        // }
+        // return ""
+    }
 
     // this is only a proof-of-concept single page report in a draft email for weekly report
     // it will be improved later on

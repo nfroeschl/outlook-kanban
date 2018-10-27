@@ -19,6 +19,34 @@ body {
     padding: 5px 10px;
 }
 
+.backlog-heading {
+    background-color: dimgrey !important;
+}
+
+.next-heading {
+    background-color: indigo !important;
+}
+
+.progress-heading {
+    background-color: steelblue !important;
+}
+
+.focus-heading {
+    background-color: firebrick !important;
+}
+
+.waiting-heading {
+    background-color: #fe8100 !important;
+}
+
+.completed-heading {
+    background-color: forestgreen !important
+}
+
+.backlog-heading h5, .next-heading h5, .progress-heading h5, .focus-heading h5, .waiting-heading h5, .completed-heading h5 {
+    color: white;
+}
+
 .panel-body {
     padding: 10px;
     word-wrap: break-word;
@@ -35,7 +63,7 @@ body {
     margin-top:  5px;
     margin-bottom: 10px;
     font-weight: 700;
-    color: #555;
+    /* color: #555; */
 }
 
 .tasklist {
@@ -46,6 +74,7 @@ body {
 li.task {
     padding: 0;
     margin-bottom: 10px;
+    border-left-width: 7px !important;
 }
 
 li.task header {
